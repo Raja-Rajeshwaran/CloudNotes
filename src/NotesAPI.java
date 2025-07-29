@@ -1,68 +1,88 @@
+
 import com.sun.net.httpserver.*;
 import java.io.*;
 import java.net.*;
 import java.util.*;
 
 public class NotesAPI {
+
+    @SuppressWarnings("ConvertToStringSwitch")
     public static void main(String[] args) throws IOException {
         int port = Integer.parseInt(System.getenv().getOrDefault("PORT", "8080"));
-
         HttpServer server = HttpServer.create(new InetSocketAddress(port), 0);
+        server.createContext("/", (exchange -> {
+            String response = """
+-> Hey there! Welcome to **CloudNotes API** — your lightweight, cloud-ready backend for taking quick notes using simple HTTP requests.
 
-        // ✅ Root context: /
-        // ✅ Root context: /
-server.createContext("/", (exchange -> {
-    String response = """
-👋 Welcome to CloudNotes API!
+-> This is a mini RESTful API built in raw Java using `HttpServer`. Perfect for beginners, cloud learners, or anyone who vibes with simple, no-framework solutions!
 
-📌 This is a lightweight cloud-based Java API deployed on Render.
+-> API Endpoints:
+--------------------------------------
+GET  /              → View this welcome message  
+GET  /notes         → Get all stored notes  
+POST /notes         → Add a new note (plain text body)
 
-✨ Available Endpoints:
-- GET  /notes         → View all saved notes
-- POST /notes         → Add a new note (send raw text in request body)
+-> Example curl test:
+curl -X POST http://localhost:8080/notes -d "Learn Git deeply!"
+curl http://localhost:8080/notes
 
-💡 Example Usage:
-curl -X POST https://cloudnotes-odw0.onrender.com/notes -d "Study DevOps daily"
-curl https://cloudnotes-odw0.onrender.com/notes
+-> Built-in Memory Store: Notes are stored in memory only. Restarting the server clears all notes.
 
-🚀 Git Commands Guide for Beginners:
+--------------------------------------
+-> Git Commands Cheat Sheet:
+--------------------------------------
+🔹 git init                  → Initialize a new local repo  
+🔹 git clone <url>           → Clone an existing repo  
+🔹 git add .                 → Stage all files for commit  
+🔹 git commit -m "message"   → Commit changes with message  
+🔹 git status                → See current file status  
+🔹 git log                   → View commit history  
+🔹 git branch                → List or create branches  
+🔹 git checkout <branch>     → Switch to a branch  
+🔹 git merge <branch>        → Merge another branch into current  
+🔹 git push origin main      → Push your code to GitHub  
+🔹 git pull                  → Fetch + merge remote updates  
 
-🧰 Initialize a local repo:
-    git init
+-> Windows CRLF Warning:
+When you see:  
+  `LF will be replaced by CRLF`  
+It's just Git telling you that your system is converting Unix-style line endings (`LF`) to Windows-style (`CRLF`).  
+You can control this behavior with:
+- `git config --global core.autocrlf true` → convert LF to CRLF on checkout
+- `git config --global core.autocrlf input` → preserve LF
+- `git config --global core.autocrlf false` → disable conversions
 
-📂 Add files to staging:
-    git add .
+--------------------------------------
+-> About the Developer — Vishal:
+--------------------------------------
+-> Hey! I'm "Vishal", a Java developer, cloud computing learner, and passionate full-stack builder.
 
-💬 Commit your changes:
-    git commit -m "Initial commit"
+-> Projects I love building:
+- ERP systems from scratch (like IntegraOne)
+- Clean, minimal UI dashboards
+- Backend APIs with Java + DevOps tooling
 
-🔗 Connect to remote GitHub repo:
-    git remote add origin https://github.com/<your-username>/<your-repo>.git
+-> Tech Skills:
+Java · Swing · JDBC · Servlets · MySQL · Git · CI/CD · Docker · Basic AWS & DevOps
 
-⬆️ Push your code:
-    git push -u origin main
+-> I often dive into platforms like LeetCode, HackerRank, and explore building solutions that are *simple yet scalable*.
 
-🔄 If remote already exists, update it:
-    git remote set-url origin https://github.com/<your-username>/<your-repo>.git
+-> Fun fact: I'm a total cinema nerd. From old classics to new-gen thrillers — always down to discuss scripts and screenwriting.
 
-🛠 To check remote info:
-    git remote -v
+-> Let's connect!
+GitHub: github.com/yourusername  
+LinkedIn: linkedin.com/in/yourprofile  
+Portfolio: yourwebsite.dev
 
-🌐 Deployed via: Render (https://render.com)
-📣 Built with: Java + Minimal HTTP Server (com.sun.net.httpserver)
+-> Thanks for checking this out. Happy coding!
+""";
 
-🔐 PORT environment variable is auto-detected or defaults to 8080.
-    """;
-
-    exchange.getResponseHeaders().add("Content-Type", "text/plain");
-    exchange.sendResponseHeaders(200, response.getBytes().length);
-    try (OutputStream os = exchange.getResponseBody()) {
-        os.write(response.getBytes());
-    }
-}));
-
-
-        // ✅ Notes context: /notes
+            exchange.getResponseHeaders().add("Content-Type", "text/plain");
+            exchange.sendResponseHeaders(200, response.getBytes().length);
+            try (OutputStream os = exchange.getResponseBody()) {
+                os.write(response.getBytes());
+            }
+        }));
         server.createContext("/notes", (exchange -> {
             String method = exchange.getRequestMethod();
             exchange.getResponseHeaders().add("Content-Type", "text/plain");
@@ -80,14 +100,14 @@ curl https://cloudnotes-odw0.onrender.com/notes
                 String body = new String(is.readAllBytes()).trim();
 
                 if (body.isEmpty()) {
-                    String response = "❌ Empty note can't be added.";
+                    String response = "Empty note can't be added.";
                     exchange.sendResponseHeaders(400, response.getBytes().length);
                     try (OutputStream os = exchange.getResponseBody()) {
                         os.write(response.getBytes());
                     }
                 } else {
                     NoteStore.addNote(body);
-                    String response = "✅ Note added!";
+                    String response = "Note added!";
                     exchange.sendResponseHeaders(200, response.getBytes().length);
                     try (OutputStream os = exchange.getResponseBody()) {
                         os.write(response.getBytes());
@@ -95,12 +115,12 @@ curl https://cloudnotes-odw0.onrender.com/notes
                 }
 
             } else {
-                exchange.sendResponseHeaders(405, -1); // Method Not Allowed
+                exchange.sendResponseHeaders(405, -1);
             }
         }));
 
-        server.setExecutor(null); // default executor
+        server.setExecutor(null);
         server.start();
-        System.out.println("🚀 Server running on port " + port);
+        System.out.println("Server running on port " + port);
     }
 }
