@@ -10,14 +10,57 @@ public class NotesAPI {
         HttpServer server = HttpServer.create(new InetSocketAddress(port), 0);
 
         // ✅ Root context: /
-        server.createContext("/", (exchange -> {
-            String response = "👋 Welcome to CloudNotes API!\nUse /notes to GET or POST notes.";
-            exchange.getResponseHeaders().add("Content-Type", "text/plain");
-            exchange.sendResponseHeaders(200, response.getBytes().length);
-            try (OutputStream os = exchange.getResponseBody()) {
-                os.write(response.getBytes());
-            }
-        }));
+        // ✅ Root context: /
+server.createContext("/", (exchange -> {
+    String response = """
+👋 Welcome to CloudNotes API!
+
+📌 This is a lightweight cloud-based Java API deployed on Render.
+
+✨ Available Endpoints:
+- GET  /notes         → View all saved notes
+- POST /notes         → Add a new note (send raw text in request body)
+
+💡 Example Usage:
+curl -X POST https://cloudnotes-odw0.onrender.com/notes -d "Study DevOps daily"
+curl https://cloudnotes-odw0.onrender.com/notes
+
+🚀 Git Commands Guide for Beginners:
+
+🧰 Initialize a local repo:
+    git init
+
+📂 Add files to staging:
+    git add .
+
+💬 Commit your changes:
+    git commit -m "Initial commit"
+
+🔗 Connect to remote GitHub repo:
+    git remote add origin https://github.com/<your-username>/<your-repo>.git
+
+⬆️ Push your code:
+    git push -u origin main
+
+🔄 If remote already exists, update it:
+    git remote set-url origin https://github.com/<your-username>/<your-repo>.git
+
+🛠 To check remote info:
+    git remote -v
+
+🌐 Deployed via: Render (https://render.com)
+📣 Built with: Java + Minimal HTTP Server (com.sun.net.httpserver)
+
+🔐 PORT environment variable is auto-detected or defaults to 8080.
+    """;
+
+    exchange.getResponseHeaders().add("Content-Type", "text/plain");
+    exchange.sendResponseHeaders(200, response.getBytes().length);
+    try (OutputStream os = exchange.getResponseBody()) {
+        os.write(response.getBytes());
+    }
+}));
+
 
         // ✅ Notes context: /notes
         server.createContext("/notes", (exchange -> {

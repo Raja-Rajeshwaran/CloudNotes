@@ -1,6 +1,6 @@
 
-import java.util.*;
 import java.io.*;
+import java.util.*;
 
 public class NoteStore {
     private static final String FILE = "notes.txt";
