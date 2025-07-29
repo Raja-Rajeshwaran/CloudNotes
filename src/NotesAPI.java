@@ -12,7 +12,7 @@ public class NotesAPI {
         HttpServer server = HttpServer.create(new InetSocketAddress(port), 0);
         server.createContext("/", (exchange -> {
             String response = """
--> Hey there! Welcome to **CloudNotes API** — your lightweight, cloud-ready backend for taking quick notes using simple HTTP requests.
+-> Hey there! Welcome to "CloudNotes API" - your lightweight, cloud-ready backend for taking quick notes using simple HTTP requests.
 
 -> This is a mini RESTful API built in raw Java using `HttpServer`. Perfect for beginners, cloud learners, or anyone who vibes with simple, no-framework solutions!
 
@@ -54,7 +54,7 @@ public class NotesAPI {
 - `git config --global core.autocrlf false` -- disable conversions
 
 ---------------------------- 
--> About the Developer — RR:
+-> About the Developer - RR:
 ----------------------------
 -> Hey! I'm Raja Rajeshwaran alias Vishal, a Java developer, cloud computing learner, and passionate full-stack builder.
 
@@ -64,11 +64,11 @@ public class NotesAPI {
 -- Backend APIs with Java + DevOps tooling
 
 -> Tech Skills:
--- Java · Swing · JDBC · Servlets · MySQL · Git · CI/CD · Docker · Basic AWS & DevOps
+-- Java + Swing + JDBC + Servlets + MySQL + Git + CI/CD + Docker + Basic AWS & DevOps
 
--> I often dive into platforms like LeetCode, HackerRank, and explore building solutions that are *simple yet scalable*.
+-> I often dive into platforms like LeetCode, HackerRank, and explore building solutions that are 'simple yet scalable'.
 
--> Fun fact: I'm a total cinema nerd. From old classics to new-gen thrillers — always down to discuss scripts and screenwriting.
+-> Fun fact: I'm a total cinema nerd. From old classics to new-gen thrillers - always down to discuss scripts and screenwriting.
 
 -> Let's connect!
 -- GitHub: https://github.com/Raja-Rajeshwaran
