@@ -1,0 +1,13 @@
+
+services:
+  - type: web
+    name: cloudnotes
+    runtime: docker
+    plan: free
+    repo: https://github.com/your-username/cloudnotes
+    branch: main
+    dockerContext: .
+    dockerfilePath: Dockerfile
+    envVars:
+      - key: PORT
+        value: 8080
